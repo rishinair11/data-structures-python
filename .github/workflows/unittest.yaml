@@ -1,0 +1,44 @@
+name: unittest
+
+on: 
+  pull_request:
+    branches:
+      - main
+  
+permissions: read-all
+
+defaults:
+  run:
+    shell: bash
+    working-directory: .
+
+jobs:
+  pre-req:
+
+    runs-on: ubuntu-20.04
+
+    steps:
+      - name: Checkout code
+      - uses: actions/checkout@v2
+
+      - name: Setup python 3.x
+        uses: actions/setup-python@v2
+        with: 
+          python-version: 3.9
+          architecture: 'x64'
+
+      - name: Display python version
+        run: |
+          import sys
+          print(sys.version)
+        shell: python
+
+      - name: Install dependencies
+        run: pip3 install -r requirements.txt
+
+      - name: Test with unittest
+        env: 
+          TEST_FILES: 'tests/*.py'
+        run: |
+          coverage run -m unittest $TEST_FILES -v
+          coverage report
