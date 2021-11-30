@@ -12,7 +12,7 @@ defaults:
     shell: bash
 
 jobs:
-  pre-req:
+  run-linting-unittests:
 
     runs-on: ubuntu-20.04
 
